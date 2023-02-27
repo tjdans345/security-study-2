@@ -1,6 +1,6 @@
 package dev.study.springscurity2.repository;
 
-import dev.study.springscurity2.Entity.User;
+import dev.study.springscurity2.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

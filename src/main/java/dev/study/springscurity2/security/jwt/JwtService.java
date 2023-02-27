@@ -37,7 +37,7 @@ public class JwtService {
      * @param jwtToken JwtToken
      * @param claimsResolver 사용하고자 하는 Function
      * @return subject
-     * @param <T> Class Generic
+     * @param <T> 리턴 타입 generic
      */
     public <T> T extractClaim(String jwtToken, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(jwtToken);

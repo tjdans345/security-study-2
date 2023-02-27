@@ -51,10 +51,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // user 객체와 시큐리티 세션안에 인증 정보 객체 여부 검증
         // 시큐리티 세션 인증 객체 정보가 없으면 시큐리티 세션 객체 생성
+        // -> 즉 ( 사용자가 인증 되지 않은 경우 ) 데이터베이스에서 사용자 세부정보를 가져오고 가져온 정보를 시큐리티 컨텍스트 홀더에 업데이트 시켜준다.
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
+            // 토큰 유효성 검증
             if(jwtService.isTokenValid(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -63,15 +65,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 );
 
                 authenticationToken.setDetails(
+                        // 추가 할 세부 정보가 있으면 WebAuthenticationDetailsSource 을 이용하여 커스터 마이징 하면됨.
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
+
+                // 시큐리티 컨텍스트 홀더 ( 세션 ) 업데이트
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-
-
+            filterChain.doFilter(request, response);
         }
-
-
-
-
     }
 }
