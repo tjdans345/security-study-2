@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .cors().disable()
                 .authorizeHttpRequests()
                 // White List
-                .requestMatchers("")
+                .requestMatchers("/api/v1/auth/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

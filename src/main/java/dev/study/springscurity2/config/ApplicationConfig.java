@@ -22,6 +22,10 @@ public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
+    /**
+     * UserDetailService 를 구현하면 generated security password 가 생기지 않는다.
+     * @return
+     */
     @Bean
     public UserDetailsService userDetailsService() {
 

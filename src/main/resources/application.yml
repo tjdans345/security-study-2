@@ -3,9 +3,9 @@ server:
 
 spring:
 
-  security:
-    user:
-      password: security_test
+#  security:
+#    user:
+#      password: security_test
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
