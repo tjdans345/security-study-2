@@ -56,6 +56,7 @@ public class JwtService {
 
     /**
      * 토큰 생성 함수
+     * 추가 클레임을 필요로 하는 토큰을 생성하고 싶을 때
      * @param extractClaims 추가 클레임
      * @param userDetails 유저 세부정보 ( 유저 객체 )
      * @return Token
@@ -73,9 +74,11 @@ public class JwtService {
                 .compact();
     }
 
-    private boolean isTokenValid(String jwtToken, UserDetails userDetails) {
+    // TODO : 여기서 부터 해야함 ( 강의 1:11:20초 부터 )
+    public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
         final String username = extractUsername(jwtToken);
 
+        // 토큰에 담긴 subject 유저 정보와 UserDetails 객체의 유저 정보가 같은지 검증 , 토큰 만료 여부 검증
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(jwtToken);
 
     }
