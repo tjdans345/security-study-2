@@ -2,6 +2,7 @@ package dev.study.springscurity2.domain.entity;
 
 // Springboot 3.0 버젼부터 JavaEE 가 아닌 jakarta 패키지로 바뀐 것을 확인할 수 있다.
 import dev.study.springscurity2.enums.Role;
+import dev.study.springscurity2.domain.entity.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +39,9 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> token;
 
 
     @Override

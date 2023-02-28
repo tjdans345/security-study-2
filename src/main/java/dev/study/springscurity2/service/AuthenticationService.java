@@ -10,7 +10,6 @@ import dev.study.springscurity2.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,10 +36,10 @@ public class AuthenticationService {
                 .build();
 
         // 유저 이메일 중복 로직 추가해야 코드가 더 안전하고 깔끔함
-
         userRepository.save(user);
 
         var jwtToken = jwtService.generateToken(user);
+        var tokenEntity = Token
 
         return AuthenticationResponse
                 .builder()
