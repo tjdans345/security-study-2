@@ -1,5 +1,6 @@
 package dev.study.springscurity2.security.jwt;
 
+import dev.study.springscurity2.repository.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -27,6 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
+    private final TokenRepository tokenRepository;
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -43,7 +46,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
         jwtToken = authHeader.substring(7);
 
         // TODO extract the userEmail from JWT token ;
@@ -53,11 +55,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 시큐리티 세션 인증 객체 정보가 없으면 시큐리티 세션 객체 생성
         // -> 즉 ( 사용자가 인증 되지 않은 경우 ) 데이터베이스에서 사용자 세부정보를 가져오고 가져온 정보를 시큐리티 컨텍스트 홀더에 업데이트 시켜준다.
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
-
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-
+            var isTokenValid = tokenRepository.findByToken(jwtToken)
+                    .map(token -> !token.isExpired() && !token.isRevoked())
+                    .orElse(false);
             // 토큰 유효성 검증
-            if(jwtService.isTokenValid(jwtToken, userDetails)) {
+            if(jwtService.isTokenValid(jwtToken, userDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
