@@ -74,7 +74,6 @@ public class JwtService {
                 .compact();
     }
 
-    // TODO : 여기서 부터 해야함 ( 강의 1:11:20초 부터 )
     public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
         final String username = extractUsername(jwtToken);
 
