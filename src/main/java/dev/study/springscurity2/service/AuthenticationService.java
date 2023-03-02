@@ -52,7 +52,11 @@ public class AuthenticationService {
     }
 
 
-
+    /**
+     * 로그인
+     * @param authenticationRequest 로그인 정보 객체
+     * @return AuthenticationResponse
+     */
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
 
         authenticationManager.authenticate(
