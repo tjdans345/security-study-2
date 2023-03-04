@@ -24,11 +24,10 @@ public class ApplicationConfig {
 
     /**
      * UserDetailService 를 구현하면 generated security password 가 생기지 않는다.
-     * @return
+     * @return UserDetailsService
      */
     @Bean
     public UserDetailsService userDetailsService() {
-
         return username -> userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Email 이 존재하지 않습니다."));
     }
